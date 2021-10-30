@@ -1,13 +1,16 @@
 <template>
   <div>
     Labels
+    <Nav/>
   </div>
 </template>
 
-<script>
-
+<script lang="ts">
+export default {
+  name: 'Labels',
+};
 </script>
 
-<style>
+<style lang="scss" scoped>
 
 </style>
