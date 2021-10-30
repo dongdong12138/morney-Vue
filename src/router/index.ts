@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import VueRouter, {RouteConfig} from 'vue-router';
 
-import Home from '../views/Home.vue';
+// import Home from '../views/Home.vue';
 import Money from '@/views/Money.vue';
 import Labels from '@/views/Labels.vue';
 import Statistics from '@/views/Statistics.vue';
@@ -31,6 +31,7 @@ const routes: Array<RouteConfig> = [
   },
   {
     path: '*',
+    name: 'NotFound',
     component: NotFound
   }
   // {
