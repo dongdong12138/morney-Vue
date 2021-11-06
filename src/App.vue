@@ -20,7 +20,7 @@ body {
   font-family: $font-hei;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
+  font-size: 16px;
   color: #333;
 }
 </style>
