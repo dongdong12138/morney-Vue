@@ -17,7 +17,7 @@ export default class Types extends Vue {
   // Number 告诉 Vue，运行时检测 xxx 是否是 Number 类型
   // xxx 是属性名
   // number | undefined 告诉 TS，编译时检测 xxx 的类型
-  @Prop(Number) readonly xxx: number | undefined
+  @Prop(Number) readonly xxx: number | undefined;
 
   selectType(type: string) {
     if (type !== '-' && type !== '+') {
