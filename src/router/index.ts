@@ -21,14 +21,14 @@ const routes: Array<RouteConfig> = [
     component: Money
   },
   {
-    path: '/labels/edit',
-    name: 'EditLabel',
-    component: EditLabel
-  },
-  {
     path: '/labels',
     name: 'Labels',
     component: Labels
+  },
+  {
+    path: '/labels/edit/:id',
+    name: 'EditLabel',
+    component: EditLabel
   },
   {
     path: '/statistics',
