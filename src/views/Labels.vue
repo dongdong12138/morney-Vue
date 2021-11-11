@@ -1,8 +1,8 @@
 <template>
   <Layout>
     <ol class="tags">
-      <li v-for="(value, index) in tagList" :key="index">
-        <span>{{ value }}</span>
+      <li v-for="value in tagList" :key="value.id">
+        <span>{{ value.name }}</span>
         <Icon name="arrowRight"/>
       </li>
     </ol>
@@ -28,14 +28,7 @@ export default class Labels extends Vue {
     if (!name) return;
     const state = tagListModel.create(name);
     if (state === 'duplicate') window.alert('已存在该标签！');
-    if (state === 'success') window.alert('创建成功')
-    // try {
-    //   tagListModel.create(name);
-    // } catch (err) {
-    //   if (err.message === 'duplicate') {
-    //     window.alert('已存在该标签！');
-    //   }
-    // }
+    if (state === 'success') window.alert('创建成功');
   }
 }
 </script>
@@ -71,7 +64,6 @@ export default class Labels extends Vue {
   padding: 4px 12px;
 
   &-wrapper {
-    border: 1px solid red;
     text-align: center;
     margin-top: 44px;
   }
