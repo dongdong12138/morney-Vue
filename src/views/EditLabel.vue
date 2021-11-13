@@ -1,14 +1,14 @@
 <template>
   <Layout>
     <div class="navBar">
-      <Icon class="arrowLeft" name="arrowLeft"/>
+      <Icon @click="goBack" class="arrowLeft" name="arrowLeft"/>
       <span class="title">编辑标签</span>
     </div>
     <div class="form-wrapper">
-      <FormItem field-name="标签名" placeholder="请输入标签名"/>
+      <FormItem :value="tag.name" @update:value="updateTag" field-name="标签名" placeholder="请输入标签名"/>
     </div>
     <div class="button-wrapper">
-      <Button>删除标签</Button>
+      <Button @click="removeTag">删除标签</Button>
     </div>
   </Layout>
 </template>
@@ -24,6 +24,8 @@ import Button from '@/components/Button.vue';
   components: {Button, FormItem}
 })
 export default class EditLabel extends Vue {
+  tag?: { id: string, name: string } = undefined;
+
   created() {
     const {id} = this.$route.params;
     tagListModel.fetch();
@@ -33,6 +35,23 @@ export default class EditLabel extends Vue {
       this.$router.replace('/404');
       return;
     }
+    this.tag = tag;
+  }
+
+  updateTag(name: string) {
+    if (this.tag) {
+      tagListModel.update(this.tag.id, name);
+    }
+  }
+
+  removeTag() {
+    if (this.tag) {
+      tagListModel.remove(this.tag.id);
+    }
+  }
+
+  goBack() {
+    this.$router.back();
   }
 }
 </script>
@@ -44,6 +63,7 @@ export default class EditLabel extends Vue {
   padding: 12px 0;
   background: #fff;
   position: relative;
+
   > .arrowLeft {
     width: 22px;
     height: 22px;
@@ -53,10 +73,12 @@ export default class EditLabel extends Vue {
     transform: translateY(-50%);
   }
 }
+
 .form-wrapper {
   background: #fff;
   margin-top: 8px;
 }
+
 .button-wrapper {
   text-align: center;
   margin-top: 44px;
