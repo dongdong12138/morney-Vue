@@ -45,15 +45,12 @@ export default class Money extends Vue {
   }
 
   saveRecord() {
-    // eslint-disable-next-line no-undef
-    const record: RecordItem = recordListModel.clone(this.record);
-    record.createTime = new Date();
-    this.recordList.push(record);
+    recordListModel.create(this.record);
   }
 
   @Watch('recordList')
   onRecordListChanged() {
-    recordListModel.save(this.recordList);
+    recordListModel.save();
   }
 }
 </script>
@@ -64,6 +61,7 @@ export default class Money extends Vue {
   flex-direction: column;
   justify-content: flex-end;
 }
+
 .notes {
   padding: 12px 0;
 }
