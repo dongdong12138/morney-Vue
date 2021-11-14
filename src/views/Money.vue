@@ -23,7 +23,7 @@ import tagListModel from '@/models/tagListModel';
   components: {Types, FormItem, Tags, NumberPad}
 })
 export default class Money extends Vue {
-  tags = tagListModel.fetch();
+  tags = window.tagList;
   // eslint-disable-next-line no-undef
   record: RecordItem = {tags: [], notes: '', type: '-', amount: '0'};
   // eslint-disable-next-line no-undef

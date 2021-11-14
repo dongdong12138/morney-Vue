@@ -5,3 +5,12 @@ type RecordItem = {
   amount: number | string
   createTime?: Date
 }
+
+type Tag = {
+  id: string,
+  name: string
+}
+
+interface Window {
+  tagList: Tag[]
+}
