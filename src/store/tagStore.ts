@@ -1,20 +1,56 @@
-import tagListModel from '@/models/tagListModel';
+import createId from '@/lib/createId';
 
-export default {
+const localStorageKeyName = 'tagList';
+
+const tagStore = {
   // tag store
-  tagList: tagListModel.fetch(),
+  tagList: [] as Tag[],
+  fetchTags() {
+    this.tagList = JSON.parse(window.localStorage.getItem(localStorageKeyName) || '[]');
+    return this.tagList;
+  },
   findTag(id: string) {
     return this.tagList.filter(tag => tag.id === id)[0];
   },
-  createTag: (name: string) => {
-    const state = tagListModel.create(name);
-    if (state === 'duplicate') window.alert('已存在该标签！');
-    if (state === 'success') window.alert('创建成功');
+  createTag(name: string) {
+    const names = this.tagList.map(item => item.name);
+    if (names.includes(name)) {
+      window.alert('已存在该标签！');
+      return 'duplicate';
+    }
+    const id = createId().toString();
+    this.tagList.push({id, name: name});
+    this.saveTags();
+    window.alert('创建成功');
+    return 'success';
   },
-  removeTag: (id: string) => {
-    return tagListModel.remove(id);
+  removeTag(id: string) {
+    let index = -1;
+    for (let i = 0; i < this.tagList.length; i++) {
+      if (this.tagList[i].id === id) {
+        index = i;
+        break;
+      }
+    }
+    this.tagList.splice(index, 1);
+    this.saveTags();
+    return true;
   },
-  updateTag: (id: string, name: string) => {
-    return tagListModel.update(id, name);
+  updateTag(id: string, name: string) {
+    const idList = this.tagList.map(item => item.id);
+    if (!idList.includes(id)) return 'not found';
+    const names = this.tagList.map(item => item.name);
+    if (names.includes(name)) return 'duplicate';
+    const tag = this.tagList.filter(item => item.id === id)[0];
+    tag.name = name;
+    this.saveTags();
+    return 'success';
+  },
+  saveTags() {
+    window.localStorage.setItem(localStorageKeyName, JSON.stringify(this.tagList));
   }
 };
+
+tagStore.fetchTags();
+
+export default tagStore;
