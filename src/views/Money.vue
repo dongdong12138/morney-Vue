@@ -16,16 +16,25 @@ import Tags from '@/components/Money/Tags.vue';
 import FormItem from '@/components/Money/FormItem.vue';
 import Types from '@/components/Money/Types.vue';
 import {Component} from 'vue-property-decorator';
-import store from '@/store/index2';
 
 @Component({
-  components: {Types, FormItem, Tags, NumberPad}
+  components: {Types, FormItem, Tags, NumberPad},
+  computed: {
+    // recordList = oldStore.recordList;
+    recordList() {
+      return this.$store.state.recordList
+    }
+  }
 })
 export default class Money extends Vue {
   // eslint-disable-next-line no-undef
   record: RecordItem = {tags: [], notes: '', type: '-', amount: '0'};
   // eslint-disable-next-line no-undef
-  recordList = store.recordList;
+  // recordList = oldStore.recordList;
+
+  created() {
+    this.$store.commit('fetchRecords')
+  }
 
   onUpdateNotes(value: string) {
     console.log('onUpdateNotes:', value);
@@ -38,7 +47,7 @@ export default class Money extends Vue {
   }
 
   saveRecord() {
-    store.createRecord(this.record);
+    this.$store.commit('createRecord', this.record);
   }
 }
 </script>
