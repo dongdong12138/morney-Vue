@@ -47,7 +47,34 @@ const store = new Vuex.Store({
     },
     setCurrentTag(state, id: string) {
       state.currentTag = state.tagList.filter(tag => tag.id === id)[0];
-    }
+    },
+    updateTag(state, payload: {id: string, name: string}) {
+      const { id, name } = payload
+      const idList = state.tagList.map(item => item.id);
+      if (!idList.includes(id)) {
+        window.alert('该标签不存在')
+        return
+      }
+      const names = state.tagList.map(item => item.name);
+      if (names.includes(name)) {
+        window.alert('已存在该标签')
+        return
+      }
+      const tag = state.tagList.filter(item => item.id === id)[0];
+      tag.name = name;
+      store.commit('saveTags')
+    },
+    removeTag(state, id: string) {
+      let index = -1;
+      for (let i = 0; i < state.tagList.length; i++) {
+        if (state.tagList[i].id === id) {
+          index = i;
+          break;
+        }
+      }
+      state.tagList.splice(index, 1);
+      store.commit('saveTags')
+    },
   },
   actions: {},
   modules: {}

@@ -28,27 +28,26 @@ export default class EditLabel extends Vue {
   }
 
   created() {
+    this.$store.commit('fetchTags')
     this.$store.commit('setCurrentTag', this.$route.params.id)
     if (!this.tag) {
       this.$router.replace('/404');
     }
   }
 
-  // updateTag(name: string) {
-  //   if (this.tag) {
-  //     store.updateTag(this.tag.id, name);
-  //   }
-  // }
-  //
-  // removeTag() {
-  //   if (this.tag) {
-  //     if (store.removeTag(this.tag.id)) {
-  //       this.$router.back();
-  //     } else {
-  //       window.alert('删除失败');
-  //     }
-  //   }
-  // }
+  updateTag(name: string) {
+    if (this.tag) {
+      // store.updateTag(this.tag.id, name);
+      this.$store.commit('updateTag', {id: this.tag.id, name})
+    }
+  }
+
+  removeTag() {
+    if (this.tag) {
+      this.$store.commit('removeTag', this.tag.id)
+      this.$router.back();
+    }
+  }
 
   goBack() {
     this.$router.back();
