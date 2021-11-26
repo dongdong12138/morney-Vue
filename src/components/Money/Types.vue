@@ -1,7 +1,7 @@
 <template>
   <ul class="types">
-    <li @click="selectType('-')" :class="value === '-' && 'selected'">支出</li>
-    <li @click="selectType('+')" :class="value === '+' && 'selected'">收入</li>
+    <li @click="selectType('-')" :class="{[classPrefix+'-item']: classPrefix, 'selected': value === '-'}">支出</li>
+    <li @click="selectType('+')" :class="{[classPrefix+'-item']: classPrefix, 'selected': value === '+'}">收入</li>
   </ul>
 </template>
 
@@ -16,12 +16,13 @@ export default class Types extends Vue {
   // xxx 是属性名
   // number | undefined 告诉 TS，编译时检测 xxx 的类型
   @Prop(String) readonly value!: string;
+  @Prop(String) classPrefix?: string;
 
   selectType(type: string) {
     if (type !== '-' && type !== '+') {
       throw new Error('type is unknown');
     }
-    this.$emit('update:value', type)
+    this.$emit('update:value', type);
   }
 }
 </script>
