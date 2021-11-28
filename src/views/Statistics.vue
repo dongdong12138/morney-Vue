@@ -4,7 +4,7 @@
     <Tabs class-prefix="interval" :data-source="intervalList" :value.sync="interval"/>
     <ol>
       <li v-for="(group, index) in result" :key="index">
-        <h3 class="title">{{ group.title }}</h3>
+        <h3 class="title">{{ beautify(group.title) }}</h3>
         <ol>
           <li v-for="item in group.items" :key="item.id" class="record">
             <span>{{tagString(item.tags)}}</span>
@@ -65,6 +65,10 @@ import Vue from 'vue';
 import {Component} from 'vue-property-decorator';
 import intervalList from '@/constants/intervalList';
 import recordTypeList from '@/constants/recordTypeList';
+import dayjs from 'dayjs';
+import clone from '@/lib/clone';
+
+const oneDay = 8600 * 1000
 
 @Component({
   components: {Tabs},
@@ -75,23 +79,35 @@ export default class Statistics extends Vue {
     return tags.length === 0 ? '无' : tags.join(',');
   }
 
+  beautify(string: string) {
+    const day = dayjs(string)
+    const now = dayjs()
+    if (day.isSame(now, 'day')) {
+      return '今天'
+    } else if (day.isSame(now.subtract(1, 'day'), 'day')) {
+      return '昨天'
+    } else if (day.isSame(now.subtract(2, 'day'), 'day')) {
+      return '前天'
+    } else if (day.isSame(now, 'year')) {
+      return day.format('Y年MM月DD日')
+    } else {
+      return day.format('YYYY年MM月DD日')
+    }
+  }
+
   get recordList() {
     // eslint-disable-next-line no-undef
     return (this.$store.state as RootState).recordList;
   }
 
   get result() {
-    const {recordList} = this;
+    const {recordList} = this
     // eslint-disable-next-line no-undef
-    type HashTableValue = { title: string, items: RecordList[] }
-
-    let hashTable: { [key: string]: HashTableValue } = {};
-    for (let i = 0; i < recordList.length; i++) {
-      let [date] = recordList[i].createTime!.split('T');
-      hashTable[date] = hashTable[date] || {title: date, items: []};
-      hashTable[date].items.push(recordList[i]);
-    }
-    return hashTable;
+    type HashTableValue = { title: string, items: RecordItem[] }
+    const newList = clone(recordList).sort((a, b) => {
+      return  dayjs(b.createTime).valueOf() - dayjs(a.createTime).valueOf()
+    })
+    return []
   }
 
   created() {
