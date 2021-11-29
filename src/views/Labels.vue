@@ -32,6 +32,9 @@ export default class Labels extends Vue {
     const name = window.prompt('请输入标签名');
     if (!name) return;
     this.$store.commit('createTag', name)
+    if (this.$store.state.createTagError) {
+      window.alert(this.$store.state.createTagError.message)
+    }
   }
 }
 </script>
