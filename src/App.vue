@@ -23,5 +23,7 @@ body {
   font-size: 16px;
   color: #333;
   background: #f5f5f5;
+  max-width: 500px;
+  margin: 0 auto;
 }
 </style>
