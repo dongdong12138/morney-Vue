@@ -80,7 +80,7 @@ export default class Statistics extends Vue {
       group.total = group.items.reduce((sum, item) => {
         console.log(sum);
         console.log(item);
-        return sum + item.amount;
+        return sum + Number(item.amount);
       }, 0);
     });
     return result;
