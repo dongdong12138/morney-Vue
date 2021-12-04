@@ -4,6 +4,9 @@
     <div class="notes">
       <FormItem field-name="备注" placeholder="请输入备注" :value.sync="record.notes"/>
     </div>
+    <div class="createdAt">
+      <FormItem type="date" field-name="日期" placeholder="请输入日期" :value.sync="record.createTime"/>
+    </div>
     <Tabs :data-source="recordtypeList" :value.sync="record.type"/>
     <NumberPad @submit="saveRecord" @update:value="onUpdateAmount"/>
   </Layout>
@@ -23,14 +26,16 @@ import recordTypeList from '@/constants/recordTypeList';
 })
 export default class Money extends Vue {
   // eslint-disable-next-line no-undef
-  record: RecordItem = {tags: [], notes: '', type: '-', amount: '0'};
+  record: RecordItem = {tags: [], notes: '', type: '-', amount: '0', createTime: new Date().toISOString()};
+
   get recordList() {
-    return this.$store.state.recordList
+    return this.$store.state.recordList;
   }
-  recordtypeList = recordTypeList
+
+  recordtypeList = recordTypeList;
 
   created() {
-    this.$store.commit('fetchRecords')
+    this.$store.commit('fetchRecords');
   }
 
   onUpdateNotes(value: string) {
@@ -45,12 +50,12 @@ export default class Money extends Vue {
 
   saveRecord() {
     if (!this.record.tags || this.record.tags.length === 0) {
-      return window.alert('请选择至少一个标签！')
+      return window.alert('请选择至少一个标签！');
     }
     this.$store.commit('createRecord', this.record);
     if (this.$store.state.createRecordError === null) {
-      window.alert('已保存')
-      this.record.notes = ''
+      window.alert('已保存');
+      this.record.notes = '';
     }
   }
 }
