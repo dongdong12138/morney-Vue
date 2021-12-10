@@ -23,7 +23,8 @@ export default class Chart extends Vue {
     let chart = document.getElementById('chart') as HTMLElement;
     let myChart = echarts.init(chart);
     myChart.setOption(this.options);
-    (this.$refs.chartBox as HTMLDivElement).scrollLeft = 9999;
+    const div = (this.$refs.chartBox as HTMLDivElement);
+    div.scrollLeft = div.scrollWidth;
   }
 }
 </script>
