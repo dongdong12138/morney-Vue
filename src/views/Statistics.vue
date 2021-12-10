@@ -59,16 +59,38 @@ export default class Statistics extends Vue {
       title: {
         text: 'ECharts 入门示例'
       },
-      tooltip: {},
-      xAxis: {
-        data: ['衬衫', '羊毛衫', '雪纺衫', '裤子', '高跟鞋', '袜子']
+      tooltip: {
+        show: true,
+        formatter: '{c}'
       },
-      yAxis: {},
+      grid: {
+        left: 10,
+        right: 10
+      },
+      xAxis: [{
+        data: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30'],
+        axisTick: {
+          alignWithLabel: true
+        },
+        axisLine: {
+          lineStyle: {
+            color: '#666'
+          }
+        }
+      }],
+      yAxis: {
+        show: false
+      },
       series: [
         {
           name: '销量',
-          type: 'bar',
-          data: [5, 20, 36, 10, 10, 20]
+          type: 'line',
+          data: [5, 20, 36, 10, 10, 20, 5, 20, 36, 10, 10, 20, 5, 20, 36, 10, 10, 20, 5, 20, 36, 10, 10, 20, 5, 20, 36, 10, 10, 20],
+          itemStyle: {
+            color: '#666'
+          },
+          symbolSize: 10,
+          symbol: "circle"
         }
       ]
     };

@@ -1,6 +1,7 @@
 <template>
-  <div id="chart">
-    Chart
+  <div ref="chartBox" class="chart-box">
+    <div id="chart">
+    </div>
   </div>
 </template>
 
@@ -22,15 +23,25 @@ export default class Chart extends Vue {
     let chart = document.getElementById('chart') as HTMLElement;
     let myChart = echarts.init(chart);
     myChart.setOption(this.options);
+    (this.$refs.chartBox as HTMLDivElement).scrollLeft = 9999;
   }
 }
 </script>
 
 <style lang="scss" scoped>
-#chart {
-  width: 80vw;
+.chart-box {
+  width: 100vw;
   height: 80vw;
-  border: 1px solid red;
-  margin: 0 auto;
+  overflow: auto;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  > #chart {
+    width: 430%;
+    height: 100%;
+    border: 1px solid red;
+  }
 }
+
 </style>
