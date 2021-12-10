@@ -1,6 +1,7 @@
 <template>
   <Layout>
     <Tabs class-prefix="type" :data-source="recordTypeList" :value.sync="type"/>
+    <Chart :options="x"/>
     <ol v-if="groupedList.length > 0">
       <li v-for="(group, index) in groupedList" :key="index">
         <h3 class="title">{{ beautify(group.title) }}<span>￥{{ group.total }}</span></h3>
@@ -26,9 +27,10 @@ import {Component} from 'vue-property-decorator';
 import recordTypeList from '@/constants/recordTypeList';
 import dayjs from 'dayjs';
 import clone from '@/lib/clone';
+import Chart from '@/components/Chart.vue';
 
 @Component({
-  components: {Tabs},
+  components: {Tabs, Chart},
 })
 export default class Statistics extends Vue {
   // eslint-disable-next-line no-undef
@@ -50,6 +52,26 @@ export default class Statistics extends Vue {
     } else {
       return day.format('YYYY年MM月DD日');
     }
+  }
+
+  get x() {
+    return {
+      title: {
+        text: 'ECharts 入门示例'
+      },
+      tooltip: {},
+      xAxis: {
+        data: ['衬衫', '羊毛衫', '雪纺衫', '裤子', '高跟鞋', '袜子']
+      },
+      yAxis: {},
+      series: [
+        {
+          name: '销量',
+          type: 'bar',
+          data: [5, 20, 36, 10, 10, 20]
+        }
+      ]
+    };
   }
 
   get recordList() {
