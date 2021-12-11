@@ -28,6 +28,7 @@ import recordTypeList from '@/constants/recordTypeList';
 import dayjs from 'dayjs';
 import clone from '@/lib/clone';
 import Chart from '@/components/Chart.vue';
+import _ from 'lodash';
 
 @Component({
   components: {Tabs, Chart},
@@ -54,7 +55,30 @@ export default class Statistics extends Vue {
     }
   }
 
+  get keyValueList() {
+    const today = new Date()
+    const array = []
+    for (let i = 0; i <= 29; i++) {
+      const dateString = dayjs(today).subtract(i, 'day').format('YYYY-MM-DD');
+      const found = _.find(this.recordList, {createTime: dateString});
+      array.push({date: dateString, value: found ? found.amount : 0});
+    }
+    array.sort((a, b) => {
+      if (a.date > b.date) {
+        return 1;
+      } else if (a.date === b.date) {
+        return 0;
+      } else {
+        return -1;
+      }
+    });
+    console.log('array:', array)
+    return array
+  }
+
   get x() {
+    const keys = this.keyValueList.map(item => item.date)
+    const values = this.keyValueList.map(item => item.value)
     return {
       title: {
         text: 'ECharts 入门示例'
@@ -68,7 +92,7 @@ export default class Statistics extends Vue {
         right: 10
       },
       xAxis: [{
-        data: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30'],
+        data: keys,
         axisTick: {
           alignWithLabel: true
         },
@@ -85,12 +109,12 @@ export default class Statistics extends Vue {
         {
           name: '销量',
           type: 'line',
-          data: [5, 20, 36, 10, 10, 20, 5, 20, 36, 10, 10, 20, 5, 20, 36, 10, 10, 20, 5, 20, 36, 10, 10, 20, 5, 20, 36, 10, 10, 20],
+          data: values,
           itemStyle: {
             color: '#666'
           },
           symbolSize: 10,
-          symbol: "circle"
+          symbol: 'circle'
         }
       ]
     };
