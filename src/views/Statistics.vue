@@ -1,7 +1,7 @@
 <template>
   <Layout>
     <Tabs class-prefix="type" :data-source="recordTypeList" :value.sync="type"/>
-    <Chart :options="x"/>
+    <Chart :options="chartOptions"/>
     <ol v-if="groupedList.length > 0">
       <li v-for="(group, index) in groupedList" :key="index">
         <h3 class="title">{{ beautify(group.title) }}<span>￥{{ group.total }}</span></h3>
@@ -60,8 +60,8 @@ export default class Statistics extends Vue {
     const array = []
     for (let i = 0; i <= 29; i++) {
       const dateString = dayjs(today).subtract(i, 'day').format('YYYY-MM-DD');
-      const found = _.find(this.recordList, {createTime: dateString});
-      array.push({date: dateString, value: found ? found.amount : 0});
+      const found = _.find(this.groupedList, {title: dateString});
+      array.push({date: dateString, value: found ? found.total : 0});
     }
     array.sort((a, b) => {
       if (a.date > b.date) {
@@ -76,7 +76,7 @@ export default class Statistics extends Vue {
     return array
   }
 
-  get x() {
+  get chartOptions() {
     const keys = this.keyValueList.map(item => item.date)
     const values = this.keyValueList.map(item => item.value)
     return {

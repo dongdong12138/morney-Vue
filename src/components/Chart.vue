@@ -7,13 +7,14 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import {Component, Prop} from 'vue-property-decorator';
+import {Component, Prop, Watch} from 'vue-property-decorator';
 import * as echarts from 'echarts';
-import {EChartsCoreOption} from 'echarts';
+import {ECharts, EChartsCoreOption} from 'echarts';
 
 @Component
 export default class Chart extends Vue {
   @Prop() options?: EChartsCoreOption;
+  myChart?: ECharts;
 
   mounted() {
     if (!this.options) {
@@ -21,10 +22,15 @@ export default class Chart extends Vue {
       return;
     }
     let chart = document.getElementById('chart') as HTMLElement;
-    let myChart = echarts.init(chart);
-    myChart.setOption(this.options);
+    this.myChart = echarts.init(chart);
+    this.myChart.setOption(this.options);
     const div = (this.$refs.chartBox as HTMLDivElement);
     div.scrollLeft = div.scrollWidth;
+  }
+
+  @Watch('options')
+  onOptionsChange(newValue: EChartsCoreOption) {
+    this.myChart!.setOption(newValue);
   }
 }
 </script>
